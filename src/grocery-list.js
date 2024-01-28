@@ -36,7 +36,7 @@ async function submitForm() {
     document.getElementById('cost').value = '';
 
     try {
-        const response = await fetch('http://localhost:3000/submit', {
+        const response = await fetch('http://localhost:3000/grocery', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ function createBarEntry(graphId, name, percentage) {
 
 async function fetchGraphData() {
     try {
-        const response = await fetch('http://localhost:3000/graph-data');
+        const response = await fetch('http://localhost:3000/groceries');
         const data = await response.json();
 
         // Clear existing entries

@@ -1,41 +1,31 @@
-const express = require('express');
-const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
+import express from 'express';
+import cors from 'cors';
+import { Grocery } from './models/groceryModel.js';
 
 const app = express();
 const port = 3000;
 
-const db = new sqlite3.Database('./database.db');
-
 app.use(express.json());
 app.use(cors());
 
-app.post('/submit', (req, res) => {
-    const { name, protein, calories, servings, cost } = req.body;
-
-    db.run(
-        'INSERT INTO groceries (name, protein, calories, servings, cost) VALUES (?, ?, ?, ?, ?)',
-        [name, protein, calories, servings, cost],
-        (err) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send('Internal Server Error');
-            } else {
-                res.status(201).send('Entry added successfully');
-            }
-        }
-    );
+app.post('/grocery',  async (req, res) => {
+    try {
+        const grocery = await Grocery.create(req.body);
+        res.status(201).send(`${JSON.stringify(grocery)} added successfully`);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-app.get('/graph-data', (req, res) => {
-    db.all('SELECT * FROM groceries ORDER BY (protein / calories) DESC', (err, rows) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Internal Server Error');
-        } else {
-            res.json(rows);
-        }
-    });
+app.get('/groceries', async (req, res) => {
+    try {
+        const groceries = await Grocery.findAll();
+        return res.status(200).json(groceries);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.delete('/delete/:id', (req, res) => {
