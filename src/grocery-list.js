@@ -1,27 +1,3 @@
-/* function submitForm() {
-    // Get values from input fields
-    const name = document.getElementById('name').value;
-    const protein = parseFloat(document.getElementById('protein').value);
-    const calories = parseFloat(document.getElementById('calories').value);
-    const servings = parseFloat(document.getElementById('servings').value);
-    const cost = parseFloat(document.getElementById('cost').value);
-
-    // Clear input fields
-    document.getElementById('name').value = '';
-    document.getElementById('protein').value = '';
-    document.getElementById('calories').value = '';
-    document.getElementById('servings').value = '';
-    document.getElementById('cost').value = '';
-
-    // Calculate leanness and cost effectiveness percentages
-    const leannessPercentage = (protein / calories) * 4;
-    const costEffectiveness = (protein * servings) / cost;
-
-    // Create bar entries for graphs
-    createBarEntry('leanness', name, leannessPercentage);
-    createBarEntry('cost-effectiveness', name, costEffectiveness);
-} */
-
 async function submitForm() {
     const name = document.getElementById('name').value;
     const protein = parseFloat(document.getElementById('protein').value);
