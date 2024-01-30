@@ -1,16 +1,6 @@
-import { Sequelize, DataTypes } from 'sequelize';
+const { DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'database.db'
-});
-
-try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-} catch (error) {
-    console.error('Unable to connect to the database:', error);
-}
+const sequelize = require("../config/database");
 
 const Grocery = sequelize.define('Grocery', {
   name: DataTypes.STRING,
@@ -20,6 +10,10 @@ const Grocery = sequelize.define('Grocery', {
   cost: DataTypes.FLOAT
 }, { 
     timestamps: false
+}, {
+    validate: {
+        notNull: true
+    }
 });
 
-export { Grocery };
+module.exports = Grocery;

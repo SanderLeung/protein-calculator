@@ -42,7 +42,6 @@ function createBarEntry(graphId, name, percentage) {
     if (graphId === 'leanness') {
         progressBar.textContent = `${(percentage * 100).toFixed(2)}%`;
         progressBar.style.width = `${percentage * 100}%`;
-        progressBar.style.direction = 'rtl';
     } else {
         progressBar.textContent = `${percentage.toFixed(2)}g/$`;
         progressBar.style.width = `${percentage}%`;
