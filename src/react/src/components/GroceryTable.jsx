@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { BsInfoCircle } from 'react-icons/bs';
+import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
 
 const GroceryTable = ({ groceries }) => {
@@ -9,10 +9,8 @@ const GroceryTable = ({ groceries }) => {
       <thead>
         <tr>
           <th className='border border-slate-600 rounded-md'>Name</th>
-          <th className='border border-slate-600 rounded-md max-md:hidden'>
-            Leanness
-          </th>
-          <th className='border border-slate-600 rounded-md max-md:hidden'>
+          <th className='border border-slate-600 rounded-md'>Leanness</th>
+          <th className='border border-slate-600 rounded-md'>
             Cost Effectiveness
           </th>
           <th className='border border-slate-600 rounded-md'>Operations</th>
@@ -31,15 +29,15 @@ const GroceryTable = ({ groceries }) => {
               {`${((grocery.protein * grocery.servings) / grocery.cost).toFixed(2)}g/$`}
             </td>
             <td className='border border-slate-700 rounded-md text-center'>
-              <div className='flex justify-center gap-x-4'>
+              <div className='flex justify-center items-center gap-x-4'>
                 <Link to={`/groceries/details/${grocery.id}`}>
-                  <BsInfoCircle className='text-2xl text-green-800' />
+                  <BsFillInfoCircleFill className='text-l text-blue-900' />
                 </Link>
                 <Link to={`/groceries/edit/${grocery.id}`}>
-                  <AiOutlineEdit className='text-2xl text-yellow-600' />
+                  <AiOutlineEdit className='text-2xl text-blue-800' />
                 </Link>
                 <Link to={`/groceries/delete/${grocery.id}`}>
-                  <MdOutlineDelete className='text-2xl text-red-600' />
+                  <MdOutlineDelete className='text-xl text-red-600' />
                 </Link>
               </div>
             </td>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from '../components/Spinner';
 import { Link } from 'react-router-dom';
 import { MdOutlineAddBox } from 'react-icons/md';
@@ -30,7 +30,6 @@ const Home = () => {
     fetchData();
 }, []);
 
-
   return (
     <div className='p-4'>
       <div className='flex justify-between items-center'>
@@ -40,10 +39,8 @@ const Home = () => {
           </Link>
       </div>
       { loading ? <Spinner /> : 
-        groceries ? 
-        (groceries.length > 0 ? <GroceryTable groceries={groceries} /> :
-        <div>Empty list</div>) :
-        <Spinner />
+        groceries.length > 0 ? <GroceryTable groceries={groceries} /> :
+        <div>Empty list</div>
       }
     </div>
   );
