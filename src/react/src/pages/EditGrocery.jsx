@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,6 +13,32 @@ const EditGrocery = () => {
   const navigate = useNavigate();
   const {id} = useParams();
   
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+          const response = await fetch(`http://localhost:3000/groceries/${id}`);
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          const grocery = data[0];
+          setName(grocery.name);
+          setProtein(grocery.protein);
+          setCalories(grocery.calories);
+          setServings(grocery.servings);
+          setCost(grocery.cost);
+      } catch (error) {
+          console.error(error);
+      } finally {
+          setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleSaveGrocery = async () => {
     setLoading(true);
     try {
