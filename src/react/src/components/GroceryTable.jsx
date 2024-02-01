@@ -3,30 +3,44 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
 
+// Consider moving these into a utils/calc folder
+const getLeanness = (grocery) => ((grocery.protein / grocery.calories) * 400).toFixed(2)
+const getCostEffectiveness = (grocery) => ((grocery.protein * grocery.servings) / grocery.cost).toFixed(2)
+const getMaxCostEffectiveness = (groceries) => {
+    return groceries.reduce((acc, cur) => {
+        return Math.max(acc, getCostEffectiveness(cur))
+    }, 0);
+};
+
 const GroceryTable = ({ groceries }) => {
+  const top = getMaxCostEffectiveness(groceries);
   return (
     <table className='w-full border-separate border-spacing-2'>
       <thead>
-        <tr>
-          <th className='border border-slate-600 rounded-md'>Name</th>
-          <th className='border border-slate-600 rounded-md'>Leanness</th>
-          <th className='border border-slate-600 rounded-md'>
+        <tr className='bg-slate-50'>
+          <th className='w-1/3 border border-slate-600 rounded-md'>Name</th>
+          <th className='w-1/4 border border-slate-600 rounded-md'>Leanness</th>
+          <th className='w-1/4 border border-slate-600 rounded-md'>
             Cost Effectiveness
           </th>
-          <th className='border border-slate-600 rounded-md'>Operations</th>
+          <th className='w-1/6 border border-slate-600 rounded-md'>Operations</th>
         </tr>
       </thead>
       <tbody>
         {groceries.map((grocery) => (
-          <tr key={grocery.id} className='h-8'>
-            <td className='border border-slate-700 rounded-md text-center'>
+          <tr key={grocery.id} className='h-8 bg-slate-50'>
+            <td className='border border-slate-700 rounded-md text-center text-wrap'>
               {grocery.name}
             </td>
-            <td className='border border-slate-700 rounded-md text-right'>
-              {`${((grocery.protein / grocery.calories) * 400).toFixed(2)}%`}
+            <td className='border border-slate-700 rounded-md'>
+              <div className='bg-orange-400 rounded-md flex items-center' style={{ width: `${getLeanness(grocery)}%`}}>
+                {`${getLeanness(grocery)}%`}
+              </div>
             </td>
-            <td className='border border-slate-700 rounded-md text-right'>
-              {`${((grocery.protein * grocery.servings) / grocery.cost).toFixed(2)}g/$`}
+            <td className='border border-slate-700 rounded-md'>
+              <div className='bg-green-600 rounded-md flex items-center' style={{ width: `${getCostEffectiveness(grocery)/top*100}%`}}>
+                {`${getCostEffectiveness(grocery)}g/$`}
+              </div>
             </td>
             <td className='border border-slate-700 rounded-md text-center'>
               <div className='flex justify-center items-center gap-x-4'>
