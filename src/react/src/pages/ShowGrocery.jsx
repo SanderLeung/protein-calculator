@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
+import { AiOutlineEdit } from 'react-icons/ai';
+import { MdOutlineDelete } from 'react-icons/md';
 
 const ShowGrocery = () => {
   const [grocery, setGrocery] = useState({});
@@ -54,6 +56,14 @@ const ShowGrocery = () => {
           <div className='my-4'>
             <span className='text-xl mr-4 text-gray-500'>Cost</span>
             <span>{grocery.cost}</span>
+          </div>
+          <div className='flex justify-left items-center gap-x-4'>
+            <Link to={`/groceries/edit/${id}`}>
+              <AiOutlineEdit className='text-2xl text-blue-800' />
+            </Link>
+            <Link to={`/groceries/delete/${id}`}>
+              <MdOutlineDelete className='text-xl text-red-600' />
+            </Link>
           </div>
         </div>
       )}
