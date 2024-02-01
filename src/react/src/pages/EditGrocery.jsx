@@ -39,10 +39,10 @@ const EditGrocery = () => {
     fetchData();
   }, []);
 
-  const handleSaveGrocery = async () => {
+  const handleEditGrocery = async () => {
     setLoading(true);
     try {
-        const response = await fetch(`http://localhost:3000/grocery/${id}`, {
+        const response = await fetch(`http://localhost:3000/groceries/${id}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const EditGrocery = () => {
             className='border-2 border-gray-500 px-4 py-2  w-full '
           />
         </div>
-        <button className='p-2 bg-sky-300 m-8' onClick={handleSaveGrocery}>
+        <button className='p-2 bg-sky-300 m-8' onClick={handleEditGrocery}>
           Save
         </button>
       </div>

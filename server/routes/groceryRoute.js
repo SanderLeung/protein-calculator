@@ -17,7 +17,7 @@ router.get("/groceries/:id", getGrocery);
 
 router.post("/grocery", createGrocery);
 
-router.patch("/groceries/:id", updateGrocery);
+router.put("/groceries/:id", updateGrocery);
 
 router.delete("/groceries/:id", deleteGrocery);
 
