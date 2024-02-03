@@ -2,6 +2,7 @@ import { useState } from 'react';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 
 const DeleteGrocery = () => {
   const [loading, setLoading] = useState(false);
@@ -11,17 +12,16 @@ const DeleteGrocery = () => {
   const handleDeleteGrocery = async () => {
     setLoading(true);
     try {
-        const response = await fetch(`http://localhost:3000/groceries/${id}`, {
-            method: 'DELETE',
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setLoading(false);
-        navigate('/');
+      const { error } = await supabase
+        .from('groceries')
+        .delete()
+        .eq('id', id);
+        
+      setLoading(false);
+      navigate('/groceries/details');
     } catch (error) {
-        setLoading(false);
-        console.error(error);
+      setLoading(false);
+      console.error(error);
     }
   };
   

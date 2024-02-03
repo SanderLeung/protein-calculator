@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 
 const EditGrocery = () => {
   const [name, setName] = useState('');
@@ -17,22 +18,21 @@ const EditGrocery = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-          const response = await fetch(`http://localhost:3000/groceries/${id}`);
-          if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const data = await response.json();
-          const grocery = data[0];
-          setName(grocery.name);
-          setProtein(grocery.protein);
-          setCalories(grocery.calories);
-          setServings(grocery.servings);
-          setCost(grocery.cost);
+        const { data, error } = await supabase
+          .from('groceries')
+          .select('*')
+          .eq('id', id)
+          .single()
+        const grocery = data;
+        setName(grocery.name);
+        setProtein(grocery.protein);
+        setCalories(grocery.calories);
+        setServings(grocery.servings);
+        setCost(grocery.cost);
       } catch (error) {
-          console.error(error);
+        console.error(error);
       } finally {
-          setLoading(false);
+        setLoading(false);
       }
     };
 
@@ -42,21 +42,16 @@ const EditGrocery = () => {
   const handleEditGrocery = async () => {
     setLoading(true);
     try {
-        const response = await fetch(`http://localhost:3000/groceries/${id}`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, protein, calories, servings, cost }),
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setLoading(false);
-        navigate('/')
+      const { error } = await supabase
+        .from('groceries')
+        .update({ name, protein, calories, servings, cost })
+        .eq('id', id)
+        
+      setLoading(false);
+      navigate('/groceries/details')
     } catch (error) {
-        setLoading(false);
-        console.error(error);
+      setLoading(false);
+      console.error(error);
     }
   };
 

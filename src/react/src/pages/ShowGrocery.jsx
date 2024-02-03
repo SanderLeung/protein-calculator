@@ -4,6 +4,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { MdOutlineDelete } from 'react-icons/md';
+import { supabase } from '../supabaseClient';
 
 const ShowGrocery = () => {
   const [grocery, setGrocery] = useState({});
@@ -14,17 +15,16 @@ const ShowGrocery = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-          const response = await fetch(`http://localhost:3000/groceries/${id}`);
-          if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const data = await response.json();
-          setGrocery(data[0]);
+        const { data, error } = await supabase
+          .from('groceries')
+          .select('*')
+          .eq('id', id)
+          .single()
+        setGrocery(data);
       } catch (error) {
-          console.error(error);
+        console.error(error);
       } finally {
-          setLoading(false);
+        setLoading(false);
       }
     };
 

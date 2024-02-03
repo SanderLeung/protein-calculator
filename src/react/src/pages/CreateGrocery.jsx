@@ -2,6 +2,7 @@ import { useState } from 'react';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 
 const CreateGrocery = () => {
   const [name, setName] = useState('');
@@ -15,21 +16,16 @@ const CreateGrocery = () => {
   const handleSaveGrocery = async () => {
     setLoading(true);
     try {
-        const response = await fetch(`http://localhost:3000/grocery`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, protein, calories, servings, cost }),
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setLoading(false);
-        navigate('/')
+      const { data: { user } } = await supabase.auth.getUser()
+      const { error } = await supabase
+        .from('groceries')
+        .insert({ name, protein, calories, servings, cost, user_id: user.id });
+
+      setLoading(false);
+      navigate('/groceries/details');
     } catch (error) {
-        setLoading(false);
-        console.error(error);
+      setLoading(false);
+      console.error(error);
     }
   };
 
