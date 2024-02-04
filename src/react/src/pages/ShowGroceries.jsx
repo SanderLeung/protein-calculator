@@ -34,8 +34,8 @@ const ShowGroceries = () => {
   return (
     <div className='p-4'>
       <div className='flex justify-between items-center'>
-          <h1 className='text-3xl my-8'>Grocery List</h1>
-          <Link to='/groceries/create' className='flex justify-between items-center'>
+          <h1 className='text-3xl my-8 text-slate-50'>Grocery List</h1>
+          <Link to='/groceries/create' className='flex justify-between items-center text-l'>
             <MdOutlineAddBox className='text-sky-800 text-4xl' />Create New
           </Link>
       </div>

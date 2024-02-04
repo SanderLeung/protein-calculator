@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import Account from './Account'
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import ShowGroceries from './pages/ShowGroceries';
@@ -12,6 +11,7 @@ import EditGrocery from './pages/EditGrocery';
 import DeleteGrocery from './pages/DeleteGrocery';
 import { Navbar } from "./components/Navbar";
 import Footer from "./components/Footer";
+import Account from './pages/Account';
 
 const App = () => {
   const [session, setSession] = useState(null)
@@ -49,12 +49,12 @@ const App = () => {
             theme="dark"
             providers={['google', 'apple']}
           />
-        </div> : 
-        //<Account key={session.user.id} session={session} />}
+        </div> :
       <div>
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/account' element={<Account key={session.user.id} session={session} />} />
           <Route path='/groceries/create' element={<CreateGrocery />} />
           <Route path='/groceries/details' element={<ShowGroceries />} />
           <Route path='/groceries/details/:id' element={<ShowGrocery />} />
