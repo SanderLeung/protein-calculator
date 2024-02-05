@@ -5,6 +5,7 @@ import { BsFillInfoCircleFill } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
+import Search from './Search';
 
 // Consider moving these into a utils/calc folder
 const getName = (grocery) => grocery.name;
@@ -20,6 +21,7 @@ const GroceryTable = ({ groceries }) => {
   const top = getMaxCostEffectiveness(groceries);
   const [sortParam, setSortParam] = useState((null));
   const [order, setOrder] = useState("asc");
+  const [query, setQuery] = useState("")
 
   const handleSortingChange = (accessor) => {
     const handleSorting = (sortParam, sortOrder) => {
@@ -43,71 +45,87 @@ const GroceryTable = ({ groceries }) => {
     setOrder(sortOrder);
     handleSorting(accessor, sortOrder);
   };
-  
+
+  const search = (items) => {
+    return items.filter((item) => {
+      return ["name"].some((newItem) => {
+        return (
+            item[newItem]
+                .toString()
+                .toLowerCase()
+                .indexOf(query.toLowerCase()) > -1
+        );
+      });
+    })       
+  };
+
   return (
-    <table className='w-full border-separate border-spacing-2'>
-      <thead>
-        <tr className='bg-slate-800'>
-          <th className='w-1/3 border border-slate-600 rounded-md'>
-            <div className='flex justify-center items-center gap-x-1'>
-              Name
-              <button onClick={() => handleSortingChange(getName)}>
-                <BiSolidUpArrow /><BiSolidDownArrow />
-              </button>
-            </div>
-          </th>
-          <th className='w-1/4 border border-slate-600 rounded-md'>
-            <div className='flex justify-center items-center gap-x-1'>
-              Leanness
-              <button onClick={() => handleSortingChange(getLeanness)}>
-                <BiSolidUpArrow /><BiSolidDownArrow />
-              </button>
-            </div>
-          </th>
-          <th className='w-1/4 border border-slate-600 rounded-md'>
-            <div className='flex justify-center items-center gap-x-1'>
-              Cost Effectiveness
-              <button onClick={() => handleSortingChange(getCostEffectiveness)}>
-                <BiSolidUpArrow /><BiSolidDownArrow />
-              </button>
-            </div>
-          </th>
-          <th className='w-1/6 border border-slate-600 rounded-md'>Operations</th>
-        </tr>
-      </thead>
-      <tbody>
-        {groceries.map((grocery) => (
-          <tr key={grocery.id} className='h-8 bg-slate-800'>
-            <td className='border border-slate-700 rounded-md text-center text-wrap'>
-              {grocery.name}
-            </td>
-            <td className='border border-slate-700 rounded-md'>
-              <div className='bg-green-700 rounded-md flex items-center' style={{ width: `${getLeanness(grocery)}%`}}>
-                {`${getLeanness(grocery)}%`}
+    <div className='wrapper'>
+      <Search data={query} handlerFunction={setQuery} />
+      <table className='w-full border-separate border-spacing-2'>
+        <thead>
+          <tr className='bg-slate-800'>
+            <th className='w-1/3 border border-slate-600 rounded-md'>
+              <div className='flex justify-center items-center gap-x-1'>
+                Name
+                <button onClick={() => handleSortingChange(getName)}>
+                  <BiSolidUpArrow /><BiSolidDownArrow />
+                </button>
               </div>
-            </td>
-            <td className='border border-slate-700 rounded-md'>
-              <div className='bg-lime-700 rounded-md flex items-center' style={{ width: `${getCostEffectiveness(grocery)/top*100}%`}}>
-                {`${getCostEffectiveness(grocery)}g/$`}
+            </th>
+            <th className='w-1/4 border border-slate-600 rounded-md'>
+              <div className='flex justify-center items-center gap-x-1'>
+                Leanness
+                <button onClick={() => handleSortingChange(getLeanness)}>
+                  <BiSolidUpArrow /><BiSolidDownArrow />
+                </button>
               </div>
-            </td>
-            <td className='border border-slate-700 rounded-md text-center'>
-              <div className='flex justify-center items-center gap-x-4'>
-                <Link to={`/groceries/details/${grocery.id}`}>
-                  <BsFillInfoCircleFill className='text-l fill-blue-700' />
-                </Link>
-                <Link to={`/groceries/edit/${grocery.id}`}>
-                  <AiOutlineEdit className='text-2xl fill-blue-800' />
-                </Link>
-                <Link to={`/groceries/delete/${grocery.id}`}>
-                  <MdOutlineDelete className='text-xl fill-red-600' />
-                </Link>
+            </th>
+            <th className='w-1/4 border border-slate-600 rounded-md'>
+              <div className='flex justify-center items-center gap-x-1'>
+                Cost Effectiveness
+                <button onClick={() => handleSortingChange(getCostEffectiveness)}>
+                  <BiSolidUpArrow /><BiSolidDownArrow />
+                </button>
               </div>
-            </td>
+            </th>
+            <th className='w-1/6 border border-slate-600 rounded-md'>Operations</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {search(groceries).map((grocery) => (
+            <tr key={grocery.id} className='h-8 bg-slate-800'>
+              <td className='border border-slate-700 rounded-md text-center text-wrap'>
+                {grocery.name}
+              </td>
+              <td className='border border-slate-700 rounded-md'>
+                <div className='bg-green-700 rounded-md flex items-center' style={{ width: `${getLeanness(grocery)}%`}}>
+                  {`${getLeanness(grocery)}%`}
+                </div>
+              </td>
+              <td className='border border-slate-700 rounded-md'>
+                <div className='bg-lime-700 rounded-md flex items-center' style={{ width: `${getCostEffectiveness(grocery)/top*100}%`}}>
+                  {`${getCostEffectiveness(grocery)}g/$`}
+                </div>
+              </td>
+              <td className='border border-slate-700 rounded-md text-center'>
+                <div className='flex justify-center items-center gap-x-4'>
+                  <Link to={`/groceries/details/${grocery.id}`}>
+                    <BsFillInfoCircleFill className='text-l fill-blue-700' />
+                  </Link>
+                  <Link to={`/groceries/edit/${grocery.id}`}>
+                    <AiOutlineEdit className='text-2xl fill-blue-800' />
+                  </Link>
+                  <Link to={`/groceries/delete/${grocery.id}`}>
+                    <MdOutlineDelete className='text-xl fill-red-600' />
+                  </Link>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

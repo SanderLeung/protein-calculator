@@ -57,12 +57,12 @@ const ShowGrocery = () => {
             <span className='text-xl mr-4 text-gray-500'>Cost</span>
             <span>{grocery.cost}</span>
           </div>
-          <div className='flex justify-left items-center gap-x-4'>
+          <div className='flex justify-center items-center gap-x-4'>
             <Link to={`/groceries/edit/${id}`}>
-              <AiOutlineEdit className='text-2xl text-blue-800' />
+              <AiOutlineEdit className='text-2xl fill-blue-800' />
             </Link>
             <Link to={`/groceries/delete/${id}`}>
-              <MdOutlineDelete className='text-xl text-red-600' />
+              <MdOutlineDelete className='text-xl fill-red-600' />
             </Link>
           </div>
         </div>

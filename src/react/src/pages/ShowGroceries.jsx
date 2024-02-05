@@ -40,8 +40,9 @@ const ShowGroceries = () => {
           </Link>
       </div>
       { loading ? <Spinner /> : 
-        groceries.length > 0 ? <GroceryTable groceries={groceries} /> :
-        <div>Empty list</div>
+        groceries.length > 0 ? 
+          <GroceryTable groceries={groceries} /> :
+          <div>Empty list</div>
       }
     </div>
   );
