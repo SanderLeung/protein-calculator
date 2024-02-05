@@ -47,7 +47,7 @@ const App = () => {
               },
             }}
             theme="dark"
-            providers={['google', 'apple']}
+            providers={['google', 'facebook']}
           />
         </div> :
       <div>
