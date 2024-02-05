@@ -184,7 +184,8 @@ label {
   text-transform: uppercase;
 }
 
-input {
+input,
+select {
   width: 100%;
   border-radius: 5px;
   border: var(--custom-border);

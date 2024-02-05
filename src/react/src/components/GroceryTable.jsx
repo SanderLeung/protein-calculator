@@ -6,6 +6,7 @@ import { MdOutlineDelete } from 'react-icons/md';
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
 import Search from './Search';
+import Dropdown from './Dropdown';
 
 // Consider moving these into a utils/calc folder
 const getName = (grocery) => grocery.name;
@@ -22,6 +23,7 @@ const GroceryTable = ({ groceries }) => {
   const [sortParam, setSortParam] = useState((null));
   const [order, setOrder] = useState("asc");
   const [query, setQuery] = useState("")
+  const [filterParam, setFilterParam] = useState(["All"]);
 
   const handleSortingChange = (accessor) => {
     const handleSorting = (sortParam, sortOrder) => {
@@ -59,9 +61,22 @@ const GroceryTable = ({ groceries }) => {
     })       
   };
 
+  const categories = () => {
+    const categorySet = new Set(
+      groceries.reduce((acc, cur) => {
+        return acc.concat(cur.tags ?? [])
+      }, [])
+    );
+    console.log([...categorySet])
+    return [...categorySet];
+  }
+
   return (
     <div className='wrapper'>
-      <Search data={query} handlerFunction={setQuery} />
+      <div className='flex justify-between items-center'>
+        <Search data={query} handlerFunction={setQuery} />
+        <Dropdown data={categories()} handlerFunction={setFilterParam} />
+      </div>
       <table className='w-full border-separate border-spacing-2'>
         <thead>
           <tr className='bg-slate-800'>

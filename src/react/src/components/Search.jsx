@@ -3,7 +3,7 @@ import { IoSearch } from "react-icons/io5";
 const Search = ({data, handlerFunction}) => {
   return (
     <div className="search-wrapper">
-        <label htmlFor="search-form" className="flex justify-between items-center">
+        <label htmlFor="search-form" className="flex gap-x-1 items-center">
         <IoSearch className="text-2xl"/>
             <input
                 type="search"
