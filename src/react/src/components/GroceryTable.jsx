@@ -23,7 +23,7 @@ const GroceryTable = ({ groceries }) => {
   const [sortParam, setSortParam] = useState((null));
   const [order, setOrder] = useState("asc");
   const [query, setQuery] = useState("")
-  const [filterParam, setFilterParam] = useState(["All"]);
+  const [filterParam, setFilterParam] = useState("All");
 
   const handleSortingChange = (accessor) => {
     const handleSorting = (sortParam, sortOrder) => {
@@ -50,14 +50,17 @@ const GroceryTable = ({ groceries }) => {
 
   const search = (items) => {
     return items.filter((item) => {
-      return ["name"].some((newItem) => {
-        return (
-            item[newItem]
-                .toString()
-                .toLowerCase()
-                .indexOf(query.toLowerCase()) > -1
-        );
-      });
+      if (filterParam == "All" || 
+        (item.tags ? item.tags.includes(filterParam) : false)) {
+        return ["name"].some((newItem) => {
+          return (
+              item[newItem]
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(query.toLowerCase()) > -1
+          );
+        });
+      }
     })       
   };
 
@@ -67,7 +70,6 @@ const GroceryTable = ({ groceries }) => {
         return acc.concat(cur.tags ?? [])
       }, [])
     );
-    console.log([...categorySet])
     return [...categorySet];
   }
 
