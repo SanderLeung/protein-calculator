@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
+import TagsInput from '../components/TagsInput';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 const CreateGrocery = () => {
   const [name, setName] = useState('');
-  const [protein, setProtein] = useState('');
-  const [calories, setCalories] = useState('');
-  const [cost, setCost] = useState('');
-  const [servings, setServings] = useState('');
+  const [protein, setProtein] = useState(null);
+  const [calories, setCalories] = useState(null);
+  const [cost, setCost] = useState(null);
+  const [servings, setServings] = useState(null);
+  const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   
@@ -50,7 +52,7 @@ const CreateGrocery = () => {
             type='number'
             value={protein}
             onChange={(e) => setProtein(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
         </div>
         <div className='my-4'>
@@ -59,7 +61,7 @@ const CreateGrocery = () => {
             type='number'
             value={calories}
             onChange={(e) => setCalories(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
         </div>
         <div className='my-4'>
@@ -68,7 +70,7 @@ const CreateGrocery = () => {
             type='number'
             value={servings}
             onChange={(e) => setServings(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
         </div>
         <div className='my-4'>
@@ -77,8 +79,12 @@ const CreateGrocery = () => {
             type='number'
             value={cost}
             onChange={(e) => setCost(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
+        </div>
+        <div className='my-4'>
+          <label className='text-xl mr-4 text-gray-500'>tags</label>
+          <TagsInput tags={tags} handlerFunction={setTags}/>
         </div>
         <button className='p-2 bg-sky-300 m-8' onClick={handleSaveGrocery}>
           Save
