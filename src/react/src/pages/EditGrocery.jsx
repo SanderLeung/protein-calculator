@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import TagsInput from '../components/TagsInput';
 
 const EditGrocery = () => {
   const [name, setName] = useState('');
@@ -10,6 +11,7 @@ const EditGrocery = () => {
   const [calories, setCalories] = useState('');
   const [cost, setCost] = useState('');
   const [servings, setServings] = useState('');
+  const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {id} = useParams();
@@ -29,6 +31,7 @@ const EditGrocery = () => {
         setCalories(grocery.calories);
         setServings(grocery.servings);
         setCost(grocery.cost);
+        setTags(grocery.tags ?? [])
       } catch (error) {
         console.error(error);
       } finally {
@@ -44,7 +47,7 @@ const EditGrocery = () => {
     try {
       const { error } = await supabase
         .from('groceries')
-        .update({ name, protein, calories, servings, cost })
+        .update({ name, protein, calories, servings, cost, tags })
         .eq('id', id)
         
       setLoading(false);
@@ -76,7 +79,7 @@ const EditGrocery = () => {
             type='number'
             value={protein}
             onChange={(e) => setProtein(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
         </div>
         <div className='my-4'>
@@ -85,7 +88,7 @@ const EditGrocery = () => {
             type='number'
             value={calories}
             onChange={(e) => setCalories(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
         </div>
         <div className='my-4'>
@@ -94,7 +97,7 @@ const EditGrocery = () => {
             type='number'
             value={servings}
             onChange={(e) => setServings(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
         </div>
         <div className='my-4'>
@@ -103,8 +106,12 @@ const EditGrocery = () => {
             type='number'
             value={cost}
             onChange={(e) => setCost(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2  w-full '
+            className='border-2 border-gray-500 px-4 py-2 w-full'
           />
+        </div>
+        <div className='my-4'>
+          <label className='text-xl mr-4 text-gray-500'>Tags</label>
+          <TagsInput tags={tags} handlerFunction={setTags}/>
         </div>
         <button className='p-2 bg-sky-300 m-8' onClick={handleEditGrocery}>
           Save
