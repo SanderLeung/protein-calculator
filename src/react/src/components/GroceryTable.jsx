@@ -11,7 +11,7 @@ import Dropdown from './Dropdown';
 // Consider moving these into a utils/calc folder
 const getName = (grocery) => grocery.name;
 const getLeanness = (grocery) => ((grocery.protein / grocery.calories) * 400).toFixed(2)
-const getCostEffectiveness = (grocery) => ((grocery.protein * grocery.servings) / grocery.cost).toFixed(2)
+const getCostEffectiveness = (grocery) => (((grocery.protein * grocery.servings) / grocery.cost) || 0).toFixed(2)
 const getMaxCostEffectiveness = (groceries) => {
     return groceries.reduce((acc, cur) => {
         return Math.max(acc, getCostEffectiveness(cur))

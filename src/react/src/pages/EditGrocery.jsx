@@ -7,10 +7,10 @@ import TagsInput from '../components/TagsInput';
 
 const EditGrocery = () => {
   const [name, setName] = useState('');
-  const [protein, setProtein] = useState('');
-  const [calories, setCalories] = useState('');
-  const [cost, setCost] = useState('');
-  const [servings, setServings] = useState('');
+  const [protein, setProtein] = useState(null);
+  const [calories, setCalories] = useState(null);
+  const [cost, setCost] = useState(null);
+  const [servings, setServings] = useState(null);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
