@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { BsFillInfoCircleFill } from 'react-icons/bs';
@@ -7,6 +7,7 @@ import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
 import Search from './Search';
 import Dropdown from './Dropdown';
+import TablePaginator from './TablePaginator';
 
 // Consider moving these into a utils/calc folder
 const getName = (grocery) => grocery.name;
@@ -18,12 +19,41 @@ const getMaxCostEffectiveness = (groceries) => {
     }, 0);
 };
 
-const GroceryTable = ({ groceries }) => {
+const usePage = (data, page, rowsPerPage) => {
+  const [tableRange, setTableRange] = useState([]);
+  const [slice, setSlice] = useState([]);
+
+  const calculateRange = (data, rowsPerPage) => {
+    const range = [];
+    const num = Math.ceil(data.length / rowsPerPage);
+    for (let i = 1; i <= num; i++) {
+        range.push(i);
+    }
+    return range;
+  };
+  
+  const sliceData = (data, page, rowsPerPage) => {
+    return data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  };
+
+  useEffect(() => {
+      const range = calculateRange(data, rowsPerPage);
+      setTableRange([...range]);
+
+      const slice = sliceData(data, page, rowsPerPage);
+      setSlice([...slice]);
+  }, [data, setTableRange, page, setSlice, rowsPerPage]);
+
+  return { slice, range: tableRange };
+};
+
+const GroceryTable = ({ groceries, rowsPerPage }) => {
   const top = getMaxCostEffectiveness(groceries);
   const [sortParam, setSortParam] = useState((null));
   const [order, setOrder] = useState("asc");
   const [query, setQuery] = useState("")
   const [filterParam, setFilterParam] = useState("All");
+  const [page, setPage] = useState(1);
 
   const handleSortingChange = (accessor) => {
     const handleSorting = (sortParam, sortOrder) => {
@@ -73,10 +103,14 @@ const GroceryTable = ({ groceries }) => {
     return [...categorySet];
   }
 
+  const groceryData = useMemo(() => (search(groceries)), [groceries, sortParam, order, query, filterParam, page])
+  const { slice, range } = usePage(groceryData, page, rowsPerPage);
+
   return (
     <div className='wrapper'>
       <div className='flex justify-between items-center'>
         <Search data={query} handlerFunction={setQuery} />
+        <TablePaginator range={range} slice={slice} setPage={setPage} page={page} />
         <Dropdown data={categories()} handlerFunction={setFilterParam} />
       </div>
       <table className='w-full border-separate border-spacing-2'>
@@ -110,7 +144,7 @@ const GroceryTable = ({ groceries }) => {
           </tr>
         </thead>
         <tbody>
-          {search(groceries).map((grocery) => (
+          {slice.map((grocery) => (
             <tr key={grocery.id} className='h-8 bg-slate-800'>
               <td className='border border-slate-700 rounded-md text-center text-wrap'>
                 {grocery.name}
@@ -142,6 +176,10 @@ const GroceryTable = ({ groceries }) => {
           ))}
         </tbody>
       </table>
+      <div className='flex justify-center items-center'>
+        <TablePaginator range={range} slice={slice} setPage={setPage} page={page} />
+      </div>
+     
     </div>
   );
 };
