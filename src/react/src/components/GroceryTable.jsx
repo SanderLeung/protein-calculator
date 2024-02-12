@@ -47,13 +47,14 @@ const usePage = (data, page, rowsPerPage) => {
   return { slice, range: tableRange };
 };
 
-const GroceryTable = ({ groceries, rowsPerPage }) => {
+const GroceryTable = ({ groceries }) => {
   const top = getMaxCostEffectiveness(groceries);
   const [sortParam, setSortParam] = useState((null));
   const [order, setOrder] = useState("asc");
   const [query, setQuery] = useState("")
   const [filterParam, setFilterParam] = useState("All");
   const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const handleSortingChange = (accessor) => {
     const handleSorting = (sortParam, sortOrder) => {
@@ -110,7 +111,16 @@ const GroceryTable = ({ groceries, rowsPerPage }) => {
     <div className='wrapper'>
       <div className='flex justify-between items-center'>
         <Search data={query} handlerFunction={setQuery} />
-        <TablePaginator range={range} slice={slice} setPage={setPage} page={page} />
+        <div className='my-2 flex'>
+          <input
+            id='page'
+            type='number'
+            value={rowsPerPage}
+            onInput={(e) => setRowsPerPage(e.target.value)}
+            className='px-4 py-2'
+          />
+          <label htmlFor='page' className='ml-4'>rows per page</label>
+        </div>
         <Dropdown data={categories()} handlerFunction={setFilterParam} />
       </div>
       <table className='w-full border-separate border-spacing-2'>

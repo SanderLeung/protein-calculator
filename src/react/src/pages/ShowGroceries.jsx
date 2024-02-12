@@ -41,7 +41,7 @@ const ShowGroceries = () => {
       </div>
       { loading ? <Spinner /> : 
         groceries.length > 0 ? 
-          <GroceryTable groceries={groceries} rowsPerPage={20}/> :
+          <GroceryTable groceries={groceries} /> :
           <div>Empty list</div>
       }
     </div>

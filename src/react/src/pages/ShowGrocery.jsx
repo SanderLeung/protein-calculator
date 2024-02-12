@@ -47,25 +47,25 @@ const ShowGrocery = () => {
           </div>
           <div className='flex justify-center'>
             <div className='flex flex-col border-2 border-sky-400 rounded-xl w-fit p-4'>
-              <div className='my-4'>
+              <div className='my-2'>
                 <span className='text-xl mr-4 text-gray-500'>Tags</span>
                 <span>
                   {grocery.tags ? grocery.tags.join(', ') : ''}
                 </span>
               </div>
-              <div className='my-4'>
+              <div className='my-2'>
                 <span className='text-xl mr-4 text-gray-500'>Protein</span>
                 <span>{grocery.protein}</span>
               </div>
-              <div className='my-4'>
+              <div className='my-2'>
                 <span className='text-xl mr-4 text-gray-500'>Calories</span>
                 <span>{grocery.calories}</span>
               </div>
-              <div className='my-4'>
+              <div className='my-2'>
                 <span className='text-xl mr-4 text-gray-500'>Servings</span>
                 <span>{grocery.servings}</span>
               </div>
-              <div className='my-4'>
+              <div className='my-2'>
                 <span className='text-xl mr-4 text-gray-500'>Cost</span>
                 <span>{grocery.cost}</span>
               </div>

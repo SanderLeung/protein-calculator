@@ -27,6 +27,7 @@ const TagsInput = ({ tags, handlerFunction }) => {
                 </div>
             )) }
             <input onKeyDown={handleKeyDown}
+                id="tags-input"
                 type="text"
                 className="tags-input grow px-2 border-0 outline-0 max-w-72"
                 placeholder="Type and press enter to add new tags" />
