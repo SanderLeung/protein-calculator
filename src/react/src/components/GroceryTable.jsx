@@ -50,13 +50,12 @@ const usePage = (data, page, rowsPerPage) => {
 const GroceryTable = ({ groceries }) => {
   const top = getMaxCostEffectiveness(groceries);
   const [sortParam, setSortParam] = useState((null));
-  const [order, setOrder] = useState("asc");
   const [query, setQuery] = useState("")
   const [filterParam, setFilterParam] = useState("All");
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
-  const handleSortingChange = (accessor) => {
+  const handleSortingChange = (accessor, sortOrder) => {
     const handleSorting = (sortParam, sortOrder) => {
       if (sortParam) {
         groceries.sort((a, b) => {
@@ -72,10 +71,7 @@ const GroceryTable = ({ groceries }) => {
       }
     };
 
-    const sortOrder =
-      accessor === sortParam && order === "asc" ? "desc" : "asc";
     setSortParam(() => accessor);
-    setOrder(sortOrder);
     handleSorting(accessor, sortOrder);
   };
 
@@ -104,7 +100,7 @@ const GroceryTable = ({ groceries }) => {
     return [...categorySet];
   }
 
-  const groceryData = useMemo(() => (search(groceries)), [groceries, sortParam, order, query, filterParam, page])
+  const groceryData = useMemo(() => (search(groceries)), [groceries, sortParam, query, filterParam, page])
   const { slice, range } = usePage(groceryData, page, rowsPerPage);
 
   return (
@@ -129,24 +125,33 @@ const GroceryTable = ({ groceries }) => {
             <th className='w-1/3 border border-slate-600 rounded-md'>
               <div className='flex justify-center items-center gap-x-1'>
                 Name
-                <button onClick={() => handleSortingChange(getName)}>
-                  <BiSolidUpArrow /><BiSolidDownArrow />
+                <button onClick={() => handleSortingChange(getName, "asc")}>
+                  <BiSolidUpArrow />
+                </button>
+                <button onClick={() => handleSortingChange(getName, "desc")}>
+                  <BiSolidDownArrow />
                 </button>
               </div>
             </th>
             <th className='w-1/4 border border-slate-600 rounded-md'>
               <div className='flex justify-center items-center gap-x-1'>
                 Leanness
-                <button onClick={() => handleSortingChange(getLeanness)}>
-                  <BiSolidUpArrow /><BiSolidDownArrow />
+                <button onClick={() => handleSortingChange(getLeanness, "asc")}>
+                  <BiSolidUpArrow />
+                </button>
+                <button onClick={() => handleSortingChange(getLeanness, "desc")}>
+                  <BiSolidDownArrow />
                 </button>
               </div>
             </th>
             <th className='w-1/4 border border-slate-600 rounded-md'>
               <div className='flex justify-center items-center gap-x-1'>
                 Cost Effectiveness
-                <button onClick={() => handleSortingChange(getCostEffectiveness)}>
-                  <BiSolidUpArrow /><BiSolidDownArrow />
+                <button onClick={() => handleSortingChange(getCostEffectiveness, "asc")}>
+                  <BiSolidUpArrow />
+                </button>
+                <button onClick={() => handleSortingChange(getCostEffectiveness, "desc")}>
+                  <BiSolidDownArrow />
                 </button>
               </div>
             </th>
