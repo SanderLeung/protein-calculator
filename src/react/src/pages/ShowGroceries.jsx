@@ -36,7 +36,7 @@ const ShowGroceries = () => {
       <div className='flex justify-between items-center'>
           <h1 className='text-3xl my-8 text-slate-50'>Grocery List</h1>
           <Link to='/groceries/create' className='flex justify-between items-center text-l'>
-            <MdOutlineAddBox className='fill-sky-800 text-4xl' />Create New
+            <MdOutlineAddBox className='fill-sky-800 text-4xl mr-1'/>Create New
           </Link>
       </div>
       { loading ? <Spinner /> : 

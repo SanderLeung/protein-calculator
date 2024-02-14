@@ -40,7 +40,7 @@ const CreateGrocery = () => {
         <div className='my-2'>
           <label htmlFor='name' className='text-xl mr-4 text-gray-500'>name</label>
           <input
-            id='name-input'
+            id='name'
             type='text'
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -50,7 +50,7 @@ const CreateGrocery = () => {
         <div className='my-2'>
           <label htmlFor='protein' className='text-xl mr-4 text-gray-500'>protein</label>
           <input
-            id='protein-input'
+            id='protein'
             type='number'
             value={protein}
             onChange={(e) => setProtein(e.target.value)}
@@ -60,7 +60,7 @@ const CreateGrocery = () => {
         <div className='my-2'>
           <label htmlFor='calories' className='text-xl mr-4 text-gray-500'>calories</label>
           <input
-            id='calories-input'
+            id='calories'
             type='number'
             value={calories}
             onChange={(e) => setCalories(e.target.value)}
@@ -70,7 +70,7 @@ const CreateGrocery = () => {
         <div className='my-2'>
           <label htmlFor='servings' className='text-xl mr-4 text-gray-500'>servings</label>
           <input
-            id='servings-input'
+            id='servings'
             type='number'
             value={servings}
             onChange={(e) => setServings(e.target.value)}
@@ -80,7 +80,7 @@ const CreateGrocery = () => {
         <div className='my-2'>
           <label htmlFor='cost' className='text-xl mr-4 text-gray-500'>cost</label>
           <input
-            id='cost-input'
+            id='cost'
             type='number'
             value={cost}
             onChange={(e) => setCost(e.target.value)}
