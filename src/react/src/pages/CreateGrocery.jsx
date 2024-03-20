@@ -21,7 +21,7 @@ const CreateGrocery = () => {
       const { data: { user } } = await supabase.auth.getUser()
       const { error } = await supabase
         .from('groceries')
-        .insert({ name, protein, calories, servings, cost, user_id: user.id });
+        .insert({ name, protein, calories, servings, cost, tags, user_id: user.id });
 
       setLoading(false);
       navigate('/groceries/details');
