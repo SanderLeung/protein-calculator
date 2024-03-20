@@ -49,7 +49,8 @@ const usePage = (data, page, rowsPerPage) => {
 
 const GroceryTable = ({ groceries }) => {
   const top = getMaxCostEffectiveness(groceries);
-  const [sortParam, setSortParam] = useState((null));
+  const [sortParam, setSortParam] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
   const [query, setQuery] = useState("")
   const [filterParam, setFilterParam] = useState("All");
   const [page, setPage] = useState(1);
@@ -57,6 +58,7 @@ const GroceryTable = ({ groceries }) => {
 
   const handleSortingChange = (accessor, sortOrder) => {
     const handleSorting = (sortParam, sortOrder) => {
+      setSortOrder(sortOrder);
       if (sortParam) {
         groceries.sort((a, b) => {
           if (sortParam(a) === null) return 1;
@@ -100,7 +102,7 @@ const GroceryTable = ({ groceries }) => {
     return [...categorySet];
   }
 
-  const groceryData = useMemo(() => (search(groceries)), [groceries, sortParam, query, filterParam, page])
+  const groceryData = useMemo(() => (search(groceries)), [groceries, sortParam, sortOrder, query, filterParam, page])
   const { slice, range } = usePage(groceryData, page, rowsPerPage);
 
   return (
